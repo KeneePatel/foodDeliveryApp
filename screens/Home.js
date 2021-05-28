@@ -285,7 +285,7 @@ const Home = () => {
       },
       {
          id: 6,
-         name: "ByProgrammers Dessets",
+         name: "ByProgrammers Desserts",
          rating: 4.9,
          categories: [9, 10],
          priceRating: affordable,
@@ -329,7 +329,7 @@ const Home = () => {
    ]
 
    const [categories, setCategories] = React.useState( categoryData )
-   const [selectedCategory, setSelectedCategory] = React.useState( categoryData[0] )
+   const [selectedCategory, setSelectedCategory] = React.useState()
    const [restaurants, setRestaurants] = React.useState( restaurantData )
    const [currentLocation, setCurrentLocation] = React.useState( initialCurrentLocation )
 
@@ -400,7 +400,7 @@ const Home = () => {
                style={{
                   padding: SIZES.padding,
                   paddingBottom: SIZES.padding * 2,
-                  backgroundColor: selectedCategory.id == item.id ? COLORS.primary : COLORS.white,
+                  backgroundColor: selectedCategory?.id == item.id ? COLORS.primary : COLORS.white,
                   borderRadius: SIZES.radius,
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -431,7 +431,7 @@ const Home = () => {
                <Text
                   style={{
                      marginTop: SIZES.padding,
-                     color: COLORS.white,
+                     color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
                      ...FONTS.body5
                   }}
                >
@@ -453,10 +453,124 @@ const Home = () => {
                keyExtractor={item => `${item.id}`}
                renderItem={renderItem}
                contentContainerStyle={{ paddingVertical: SIZES.padding*2 }}
-            >
-
-            </FlatList>
+            />
          </View>
+      )
+   }
+
+   function renderRestaurantList() {
+
+      const renderItem = ({item}) => {
+         return (
+            <TouchableOpacity
+               style={{
+                  marginBottom: SIZES.padding * 2
+               }}
+               //todo: onPress -> navigate to restaurant screen.
+            >
+               {/* Image */}
+               <View
+                  style={{
+                     marginBottom: SIZES.padding / 2
+                  }}
+               >
+                  <Image
+                     source={item.photo}
+                     resizeMode='cover'
+                     style={{
+                        width: '100%',
+                        height: 200,
+                        borderRadius: SIZES.radius,
+                     }}
+                  />
+
+                  {/* Duration */}
+                  <View
+                     style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        height: 30,
+                        width: SIZES.width * 0.3,
+                        backgroundColor: COLORS.white,
+                        borderTopRightRadius: SIZES.radius,
+                        borderBottomLeftRadius: SIZES.radius,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        // ...styles.shadow
+                     }}
+                  >
+                     <Text
+                        style={{
+                           ...FONTS.body4
+                        }}
+                     >{item.duration}</Text>
+                  </View>
+               </View>
+
+               {/* Restaurant info */}
+               <Text
+                  style={{
+                     // marginLeft: SIZES.padding * 2,
+                     ...FONTS.body3
+                  }}
+               >{item.name}</Text>
+
+               <View
+                  style={{
+                     marginTop: SIZES.padding / 2,
+                     flexDirection: 'row',
+                     alignItems: 'center',
+                  }}
+               >
+                  {/* Rating part */}
+                  <Image
+                     source={icons.star}
+                     style={{
+                        width: 20,
+                        height: 20,
+                        // tintColor: COLORS.primary,
+                        marginRight: 7,
+                     }}
+                  ></Image>
+                  <Text style={{...FONTS.body4}}>{item.rating}</Text>
+                  
+                  {/* Categories Label */}
+                  <View
+                     style={{
+                        flexDirection: 'row',
+                        marginLeft: 10
+                     }}
+                  >
+                     {
+                        item.categories.map((categoryId) => {
+                           return (
+                              <View
+                                 style={{
+                                    flexDirection: 'row'
+                                 }}
+                                 key={categoryId}
+                              >
+                                 
+                              </View>
+                           )
+                        })
+                     }
+                  </View>
+               </View>
+            </TouchableOpacity>
+         )
+      }
+
+      return (
+         <FlatList
+            data={restaurants}
+            keyExtractor={item => `${item.id}`}
+            renderItem={renderItem}
+            contentContainerStyle={{
+               paddingHorizontal: SIZES.padding * 2,
+               paddingBottom: 30
+            }}
+         />
       )
    }
 
@@ -464,6 +578,7 @@ const Home = () => {
       <SafeAreaView style={styles.container}>
          {renderHeader()}
          {renderMainCategories()}
+         {renderRestaurantList()}
       </SafeAreaView>
    );
 }
@@ -481,8 +596,8 @@ const styles = StyleSheet.create({
          height: 3
       },
       shadowOpacity: 0.1,
-      shadowRadius: 3,
-      elevation: 1
+      shadowRadius: 10,
+      elevation: 2
    }
 })
 
