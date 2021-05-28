@@ -328,10 +328,18 @@ const Home = () => {
       }
    ]
 
-   const [categories, setCategories] = React.useState(categoryData)
-   const [selectedCategory, setSelectedCategory] = React.useState(null)
-   const [restaurants, setRestaurants] = React.useState(restaurantData)
-   const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
+   const [categories, setCategories] = React.useState( categoryData )
+   const [selectedCategory, setSelectedCategory] = React.useState( categoryData[0] )
+   const [restaurants, setRestaurants] = React.useState( restaurantData )
+   const [currentLocation, setCurrentLocation] = React.useState( initialCurrentLocation )
+
+   function onSelectCategory(category) {
+      //filter restaurant
+      let restaurantList = restaurantData.filter(a => a.categories.includes(category.id))
+      setRestaurants(restaurantList)
+
+      setSelectedCategory(category)
+   }
 
    function renderHeader() {
       return (
@@ -384,11 +392,70 @@ const Home = () => {
       )
    }
 
-   function renderMainCatrgories() {
+   function renderMainCategories() {
+
+      const renderItem = ({item}) => {
+         return (
+            <TouchableOpacity
+               style={{
+                  padding: SIZES.padding,
+                  paddingBottom: SIZES.padding * 2,
+                  backgroundColor: selectedCategory.id == item.id ? COLORS.primary : COLORS.white,
+                  borderRadius: SIZES.radius,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: SIZES.padding,
+                  ...styles.shadow
+               }}
+               onPress={() => onSelectCategory(item)}
+            >
+               <View
+                  style={{
+                     width: 50,
+                     height: 50,
+                     borderRadius: 25,
+                     alignItems: 'center',
+                     justifyContent: 'center',
+                     backgroundColor: COLORS.white
+                  }}
+               >
+                  <Image
+                     source={item.icon}
+                     resizeMode='contain'
+                     style={{
+                        width: 30,
+                        height: 30
+                     }}
+                  />
+               </View>
+               <Text
+                  style={{
+                     marginTop: SIZES.padding,
+                     color: COLORS.white,
+                     ...FONTS.body5
+                  }}
+               >
+                  {item.name}
+               </Text>
+            </TouchableOpacity>
+         )
+      }
+
       return (
          <View style={{ padding: SIZES.padding * 2 }}>
             <Text style={{ ...FONTS.body1 }}>Main</Text>
             <Text style={{ ...FONTS.body1 }}>Categories</Text>
+
+            <FlatList
+               data={categories}
+               horizontal={true}
+               showsHorizontalScrollIndicator={false}
+               keyExtractor={item => `${item.id}`}
+               renderItem={renderItem}
+               contentContainerStyle={{ paddingVertical: SIZES.padding*2 }}
+            >
+
+            </FlatList>
          </View>
       )
    }
@@ -396,7 +463,7 @@ const Home = () => {
    return (
       <SafeAreaView style={styles.container}>
          {renderHeader()}
-         {renderMainCatrgories()}
+         {renderMainCategories()}
       </SafeAreaView>
    );
 }
