@@ -179,7 +179,7 @@ const Home = ({ navigation }) => {
       },
       {
          id: 3,
-         name: "HotdogsChillz",
+         name: "HotdogChillz",
          rating: 4.8,
          categories: [3],
          priceRating: expensive,
@@ -357,7 +357,7 @@ const Home = ({ navigation }) => {
             <TouchableOpacity
                style={{
                   width: 50,
-                  paddingLeft: SIZES.padding*2,
+                  paddingLeft: SIZES.padding,
                   justifyContent: 'center'
                }}
             >
@@ -372,7 +372,7 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                <View style={{
-                  width: '70%',
+                  width: '80%',
                   height: '100%',
                   backgroundColor: COLORS.lightGray3,
                   alignItems: 'center',
@@ -385,7 +385,7 @@ const Home = ({ navigation }) => {
             <TouchableOpacity
                style={{
                   width: 50,
-                  paddingRight: SIZES.padding*2,
+                  paddingRight: SIZES.padding,
                   justifyContent: 'center'
                }}
             >
