@@ -11,7 +11,7 @@ import {
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
-const Home = () => {
+const Home = ({ navigation }) => {
 
    // Dummy Datas
 
@@ -85,7 +85,7 @@ const Home = () => {
    const restaurantData = [
       {
          id: 1,
-         name: "ByProgrammers Burger",
+         name: "BurgerStall",
          rating: 4.8,
          categories: [5, 7],
          priceRating: affordable,
@@ -128,7 +128,7 @@ const Home = () => {
       },
       {
          id: 2,
-         name: "ByProgrammers Pizza",
+         name: "PizzaHub",
          rating: 4.8,
          categories: [2, 4, 6],
          priceRating: expensive,
@@ -179,7 +179,7 @@ const Home = () => {
       },
       {
          id: 3,
-         name: "ByProgrammers Hotdogs",
+         name: "HotdogsChillz",
          rating: 4.8,
          categories: [3],
          priceRating: expensive,
@@ -206,7 +206,7 @@ const Home = () => {
       },
       {
          id: 4,
-         name: "ByProgrammers Sushi",
+         name: "AuthentiSushi",
          rating: 4.8,
          categories: [8],
          priceRating: expensive,
@@ -233,7 +233,7 @@ const Home = () => {
       },
       {
          id: 5,
-         name: "ByProgrammers Cuisine",
+         name: "HelloCuisine",
          rating: 4.8,
          categories: [1, 2],
          priceRating: affordable,
@@ -285,7 +285,7 @@ const Home = () => {
       },
       {
          id: 6,
-         name: "ByProgrammers Desserts",
+         name: "DessertsDelicious",
          rating: 4.9,
          categories: [9, 10],
          priceRating: affordable,
@@ -340,6 +340,16 @@ const Home = () => {
 
       setSelectedCategory(category)
    }
+
+   function getCategoryNameById(id) {
+      let category = categories.filter(a => a.id == id)
+
+      if (category.length > 0)
+         return category[0].name
+
+      return ""
+   }
+
 
    function renderHeader() {
       return (
@@ -466,7 +476,10 @@ const Home = () => {
                style={{
                   marginBottom: SIZES.padding * 2
                }}
-               //todo: onPress -> navigate to restaurant screen.
+               onPress={() => navigation.navigate("Restaurant", {
+                  item,
+                  currentLocation
+               })}
             >
                {/* Image */}
                <View
@@ -496,7 +509,6 @@ const Home = () => {
                         borderBottomLeftRadius: SIZES.radius,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        // ...styles.shadow
                      }}
                   >
                      <Text
@@ -510,7 +522,6 @@ const Home = () => {
                {/* Restaurant info */}
                <Text
                   style={{
-                     // marginLeft: SIZES.padding * 2,
                      ...FONTS.body3
                   }}
                >{item.name}</Text>
@@ -528,7 +539,6 @@ const Home = () => {
                      style={{
                         width: 20,
                         height: 20,
-                        // tintColor: COLORS.primary,
                         marginRight: 7,
                      }}
                   ></Image>
@@ -550,10 +560,24 @@ const Home = () => {
                                  }}
                                  key={categoryId}
                               >
-                                 
+                                 <Text style={{...FONTS.body4}}>{getCategoryNameById(categoryId)}</Text>
+                                 <Text style={{...FONTS.h4, color: COLORS.darkgray }}> . </Text>
                               </View>
                            )
                         })
+                     }
+
+                     {/* Price */}
+                     {
+                        [1, 2, 3].map((priceRating) => (
+                           <Text
+                              key={priceRating}
+                              style={{
+                                 ...FONTS.body4,
+                                 color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
+                              }}
+                           >$</Text>
+                        ))
                      }
                   </View>
                </View>
